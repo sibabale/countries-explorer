@@ -1,50 +1,144 @@
-# Welcome to your Expo app 👋
+# Countries Explorer Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
 
-## Get started
+Countries Explorer is a React Native mobile application that allows users to browse and explore information about countries around the world. The app features user authentication, country listings, and detailed country information.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- User authentication (login/register)
+- Browse countries with search functionality
+- View detailed information about each country including:
+  - General information (capital, region, population, area)
+  - Languages and currencies
+  - Bordering countries
 
-2. Start the app
+## Tech Stack
 
-   ```bash
-    npx expo start
-   ```
+- TypeScript
+- React Native with Expo
+- React Navigation for routing
+- Styled Components for styling
+- Redux Toolkit for state management
+- Redux Persist for persistent storage
+- React Native SVG for vector graphics
 
-In the output, you'll find options to open the app in a
+## Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js (v14 or newer)
+- Yarn or npm
+- Expo CLI
+- iOS Simulator (for Mac users) or Android Emulator
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Installation
 
-## Get a fresh project
-
-When you're ready, run:
+1. Clone the repository:
 
 ```bash
-npm run reset-project
+git clone git@github.com:sibabale/countries-explorer.git
+
+cd countries-explorer/frontend/mobile
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install dependencies:
 
-## Learn more
+```bash
+yarn install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Configure environment variables:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+   - Copy the `.env.example` file to create a new `.env` file
+   - Update the values in the `.env` file with your API endpoints:
 
-## Join the community
+   ```
+   EXPO_PUBLIC_API_GATEWAY_URL='http://<YOUR_IP_ADDRESS>:3000/api'
+   EXPO_PUBLIC_FALLBACK_API_URL='https://restcountries.com/v3.1/all'
+   ```
 
-Join our community of developers creating universal apps.
+4. Start the development server:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+yarn start
+```
+
+5. Run on a specific platform:
+
+```bash
+# For iOS
+yarn ios
+
+# For Android
+yarn android
+```
+
+## Project Structure
+
+```
+frontend/mobile/
+├── assets/                # Images, fonts, and other static assets
+├── src/
+│   ├── components/        # UI components
+│   │   ├── atoms/         # Small, reusable components
+│   │   │   └── icons/     # SVG icons
+│   │   └── pages/         # Screen components
+│   │       ├── auth/      # Authentication screens
+│   │       ├── details/   # Country details screen
+│   │       └── home/      # Home screen
+│   ├── navigation/        # Navigation configuration
+│   │   ├── root/          # Root navigator
+│   │   └── stacks/        # Stack navigators
+│   ├── redux/             # Redux store and slices
+│   │   ├── selectors/     # Redux selectors
+│   │   └── slices/        # Redux slices
+│   └── utils/             # Utility functions
+├── App.tsx                # Main application component
+├── index.ts               # Entry point
+├── app.json               # Expo configuration
+├── .env                   # Environment variables (not committed to git)
+└── .env.example           # Example environment variables template
+```
+
+## API Integration
+
+The app primarily uses the REST Countries API as a fallback to fetch country data. It also attempts to use a custom API gateway with authentication, falling back to the public API if the gateway is unavailable.
+
+## Authentication
+
+The app implements a simple authentication flow with:
+
+- Login screen
+- Registration screen
+- Token-based authentication
+- Persistent login state using Redux Persist
+
+## Environment Variables
+
+The application uses environment variables for configuration. Create a `.env` file based on the `.env.example` template:
+
+```
+EXPO_PUBLIC_API_GATEWAY_URL='your-api-gateway-url'
+EXPO_PUBLIC_FALLBACK_API_URL='https://restcountries.com/v3.1/all'
+```
+
+These variables are used in the application to configure API endpoints.
+
+## Available Scripts
+
+- `yarn start`: Start the Expo development server
+- `yarn android`: Start the app on Android
+- `yarn ios`: Start the app on iOS
+- `yarn web`: Start the app in a web browser
+- `yarn format`: Format code using Prettier
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License.
