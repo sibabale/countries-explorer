@@ -97,27 +97,40 @@ Core functionalities include:
    # or
    npm install
    ```
-   *If there are separate package.json files in each microservice folder (e.g., `auth-service`, `country-service`), run `yarn install` or `npm install` in each of those folders as well.*
 
-4. **Set up your databases** (e.g., for `auth-service` and `country-service`). Update environment variables (discussed in [Environment Variables](#environment-variables)). Then run:
+### Installation Steps — Backend Microservices
+
+1. **Install dependencies** 
    ```bash
-   npx prisma migrate dev
-   npx prisma generate
+   cd gateway && yarn install 
+   cd auth-service && yarn install && 
+   cd country-service && yarn install 
    ```
-   Do this in each microservice that has a `prisma` directory.
+
+2. **Set up your env varaibel** 
+
+   ```bash
+      cd gateway && cp .env.example .env
+      cd auth-service && cp .env.example .env
+      cd country-service && cp .env.example .env
+   ```
+
+2. **Set up your databases** (e.g., for `auth-service` and `country-service`). Update environment variables (discussed in [Environment Variables](#environment-variables)). Then run:
+
+   ```bash
+   cd auth-service && npx prisma migrate dev && npx prisma generate
+   cd country-service && npx prisma generate dev && npx prisma generate
+   ```
 
 ### Running the Backend
 
 1. **Local Development**:
    ```bash
-   # From each service's directory, for example:
-   cd auth-service
-   yarn dev
-   # or
-   cd country-service
-   yarn dev
+      cd gateway && yarn dev
+      cd auth-service && yarn dev
+      cd country-service && yarn dev
    ```
-   Or run them all in parallel using your favorite process manager (e.g., **PM2**). Check the existing `ecosystem.config.js` for easy PM2 commands.
+   I recommend you run them all in parallel using your favorite process manager (e.g., **PM2**). Check the existing `ecosystem.config.js` for easy PM2 commands.
 
 2. **PM2** (Process Management):
    ```bash
@@ -141,6 +154,7 @@ Core functionalities include:
 - **Node.js** (v14 or later)  
 - **Yarn** or **npm**  
 - **Expo CLI** (installed globally)  
+
   ```bash
   npm install --global expo-cli
   # or
@@ -151,7 +165,7 @@ Core functionalities include:
 
 1. **Navigate** to the mobile frontend:
    ```bash
-   cd ../frontend/mobile
+   cd frontend/mobile
    ```
 
 2. **Install Dependencies**:
@@ -161,14 +175,39 @@ Core functionalities include:
    npm install
    ```
 
-3. **Configure Environment Variables**:  
+### 3. Configure NGROK
+
+To expose your local API Gateway (running on port 3000) publicly (e.g., for testing on a device/emulator without direct LAN access), you can use [ngrok](https://ngrok.com/). Follow these steps:
+
+1. **Install ngrok** (if you haven’t already):
+   ```bash
+   brew install ngrok
+   # or download from the official site
+   ```
+
+2. **Run ngrok** against port 3000:
+   ```bash
+   ngrok http 3000
+   ```
+   This will produce a forwarding URL like `https://1234-56-78-910.ngrok.io`. Note that each time you run ngrok, a new forwarding URL is generated unless you have a paid ngrok plan with custom subdomains.
+
+3. **Update EXPO_PUBLIC_API_GATEWAY_URL** in your `.env` so that your mobile app can reach the gateway through ngrok:
+   ```env
+   EXPO_PUBLIC_API_GATEWAY_URL="https://1234-56-78-910.ngrok.io"
+   EXPO_PUBLIC_FALLBACK_API_URL="https://restcountries.com/v3.1/all"
+   ```
+
+4. **Restart/Reload your Expo app** so that the new environment variable takes effect.
+
+
+4. **Configure Environment Variables**:  
    Copy `.env.example` to `.env` if needed:
    ```bash
    cp .env.example .env
    ```
    Then set the `EXPO_PUBLIC_API_GATEWAY_URL` to point to your local or remote API Gateway. Example:
    ```
-   EXPO_PUBLIC_API_GATEWAY_URL='http://<YOUR_IP_ADDRESS>/api' 
+   EXPO_PUBLIC_API_GATEWAY_URL='http://<NGROK_ADDRESS>:3000' 
    EXPO_PUBLIC_FALLBACK_API_URL='https://restcountries.com/v3.1/all'
    ```
 
@@ -198,11 +237,6 @@ Core functionalities include:
   cd backend/express-api/country-service
   yarn test
   ```
-
-### Frontend Tests
-_Currently unimplemented or minimal. More details can be added if you create test suites._
-
----
 
 ## Environment Variables
 

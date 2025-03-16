@@ -115,10 +115,10 @@ const CountryDetailPage = ({ navigation }: { navigation: any }) => {
       }
     }
 
-    if (countryId) {
+    if (name) {
       fetchCountryDetails()
     }
-  }, [countryId])
+  }, [name])
 
   const handleBackPress = () => {
     navigation.goBack()
