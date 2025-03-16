@@ -6,7 +6,7 @@ import { register } from './controllers/register/register';
 
 const router = Router();
 
-router.post('/auth/login', apiRateLimiter, login);
-router.post('/auth/register', apiRateLimiter, register);
+router.post('/login', apiRateLimiter, login);
+router.post('/register', apiRateLimiter, register);
 
 export default router;

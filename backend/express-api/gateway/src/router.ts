@@ -11,10 +11,13 @@ router.use('/auth', createProxyMiddleware({
     changeOrigin: true,
     pathRewrite: { '^/': '/api/' }  }));
 
-router.use('/countries', createProxyMiddleware({
-  target: countryServiceUrl,
-  changeOrigin: true,
-  pathRewrite: { '^/countries': '' },
-}));
+    router.use('/countries', createProxyMiddleware({
+      target: countryServiceUrl,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/$': '/api/countries',
+        '^/(.*)': '/api/countries/$1',
+      },
+    }));
 
 export default router;

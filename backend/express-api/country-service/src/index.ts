@@ -27,11 +27,6 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
 
 app.use('/api', router);
 
-// Basic route
-app.get('/', (_req: Request, res: Response) => {
-  res.json({ message: 'Welcome to the Country Microservice' });
-});
-
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
