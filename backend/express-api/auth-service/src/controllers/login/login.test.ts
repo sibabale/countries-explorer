@@ -146,6 +146,8 @@ describe('Login Controller', () => {
     await login(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Login failed' });
+    expect(res.json).toHaveBeenCalledWith({
+      error: 'Login failed: Error: Database error',
+    });
   });
 });

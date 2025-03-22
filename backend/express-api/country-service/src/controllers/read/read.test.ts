@@ -78,7 +78,7 @@ describe('getAllCountries Controller', () => {
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
-      error: 'Failed to fetch countries',
+      error: 'Failed to fetch countries: Error: DB error',
     });
   });
 });
