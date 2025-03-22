@@ -13,8 +13,7 @@ module.exports = {
   apps: [
     {
       name: 'api-gateway',
-      args: 'run dev',
-      script: 'yarn',
+      script: 'yarn dev',
       watch: true,
       cwd: path.join(basePath, 'gateway'),
       env: {
@@ -26,8 +25,7 @@ module.exports = {
     },
     {
       name: 'auth-service',
-      script: 'yarn',
-      args: 'run dev',
+      script: 'yarn dev',
       watch: true,
       cwd: path.join(basePath, 'auth-service'),
       env: {
@@ -39,8 +37,7 @@ module.exports = {
     },
     {
       name: 'country-service',
-      script: 'yarn',
-      args: 'run dev',
+      script: 'yarn  dev',
       watch: true,
       cwd: path.join(basePath, 'country-service'),
       env: {
