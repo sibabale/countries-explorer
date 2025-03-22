@@ -114,10 +114,16 @@ The app implements a simple authentication flow with:
 
 ## Environment Variables
 
-The application uses environment variables for configuration. Create a `.env` file based on the `.env.example` template:
+The application uses environment variables for configuration.
+
+1. Copy a `.env` file based on the `.env.example` template:
+
+```bash
+ cp .env.example .env
+```
 
 ```
-EXPO_PUBLIC_API_GATEWAY_URL='your-api-gateway-url'
+EXPO_PUBLIC_API_GATEWAY_URL='YOUR_NGROK_URL_PROXY_FOR_THE_API_GATEWAY'
 EXPO_PUBLIC_FALLBACK_API_URL='https://restcountries.com/v3.1/all'
 ```
 
