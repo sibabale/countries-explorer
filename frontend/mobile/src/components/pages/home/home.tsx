@@ -50,70 +50,64 @@ interface Country {
 
 const HomePage = ({ navigation }: { navigation: any }) => {
   // 1.5.1. HOOKS & API CALLS ....................................................................
-  const API_GATEWAY_URL = process.env.EXPO_PUBLIC_API_GATEWAY_URL
-  const FALLBACK_API_URL = process.env.EXPO_PUBLIC_FALLBACK_API_URL
 
-  const [countries, setCountries] = useState<Country[]>([])
-  const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
-  const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true)
+  const [countries, setCountries] = useState<Country[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
 
   useEffect(() => {
     const fetchCountries = async () => {
+      setLoading(true)
+      let gatewayFailed = false
+      let data
+      const token = await AsyncStorage.getItem('token')
+
       try {
-        let data
-        let response
-        let formattedData
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/countries`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-        try {
-          console.log('Attempting to fetch from API gateway...')
-          const token = await AsyncStorage.getItem('token')
-          response = await fetch(`${API_GATEWAY_URL}/countries`, {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          })
-
-          if (!response.ok) {
-            throw new Error('API gateway request failed')
-          }
-
-          data = await response.json()
-
-          formattedData = data.map((country: any) => ({
-            id: country.id || country.code,
-            name: country.name,
-            capital: country.capital || 'N/A',
-            region: country.region || 'N/A',
-            flag: country.flag,
-          }))
-
-          console.log('Successfully fetched from API gateway')
-        } catch (error) {
-          console.log('API gateway fetch failed, using fallback API... ', error)
-          response = await fetch(FALLBACK_API_URL)
-          data = await response.json()
-
-          formattedData = data.map((country: any) => ({
-            id: country.cca3,
-            name: country.name.common,
-            capital: country.capital?.[0] || 'N/A',
-            region: country.region,
-            flag: country.flags?.png,
-          }))
-
-          console.log('Successfully fetched from fallback API')
+        if (!response.ok) {
+          throw new Error('API gateway request failed')
         }
 
-        setCountries(formattedData)
-        setFilteredCountries(formattedData)
-        setLoading(false)
+        data = await response.json()
+        console.log('Successfully fetched from API gateway')
       } catch (error) {
-        console.error('Error fetching countries from both sources:', error)
+        console.error('API gateway fetch failed:', error)
+        gatewayFailed = true
         setLoading(false)
       }
+
+      if (gatewayFailed) {
+        try {
+          const response = await fetch(`${process.env.EXPO_PUBLIC_FALLBACK_API_URL}/all`)
+          const countries = await response.json()
+          data = countries[0]
+          console.log('Successfully fetched from fallback API')
+        } catch (error) {
+          console.error('Error fetching from fallback API:', error)
+          setLoading(false)
+          return
+        }
+      }
+
+      const formattedData = data.map((country: any) => ({
+        id: country.cca3,
+        name: country.name.common,
+        capital: country.capital?.[0] || 'N/A',
+        region: country.region,
+        flag: country.flags?.png,
+      }))
+
+      setCountries(formattedData)
+      setFilteredCountries(formattedData)
+      setLoading(false)
     }
 
     fetchCountries()

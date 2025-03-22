@@ -68,51 +68,69 @@ const CountryDetailPage = ({ navigation }: { navigation: any }) => {
   const route = useRoute()
   const { name } = route.params as RouteParams
 
-  const API_GATEWAY_URL = process.env.EXPO_PUBLIC_API_GATEWAY_URL
-  const FALLBACK_API_URL = process.env.EXPO_PUBLIC_FALLBACK_API_URL
-
   useEffect(() => {
     const fetchCountryDetails = async () => {
+      setLoading(true)
+      let data
+      let gatewayFailed = false
+      const token = await AsyncStorage.getItem('token')
+
       try {
-        setLoading(true)
-        const token = await AsyncStorage.getItem('token')
-        const response = await fetch(`${API_GATEWAY_URL}/countries/search`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: name,
-          }),
-        })
+        console.log(
+          'Attempting to fetch from API gateway...',
+          `${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/countries/search?name=${encodeURIComponent(name)}`
+        )
+        const response = await fetch(
+          `${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/countries/search?name=${encodeURIComponent(name)}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
 
         if (!response.ok) {
-          throw new Error('Country not found')
+          throw new Error('API gateway request failed')
         }
 
-        const data = await response.json()
-        const countryData = data[0]
-
-        setCountry({
-          id: countryData.cca3,
-          name: countryData.name.common,
-          capital: countryData.capital?.[0] || 'N/A',
-          region: countryData.region,
-          subregion: countryData.subregion,
-          population: countryData.population,
-          area: countryData.area,
-          currencies: countryData.currencies,
-          languages: countryData.languages,
-          flag: countryData.flags?.png,
-          borders: countryData.borders,
-        })
-
-        setLoading(false)
+        data = await response.json()
+        console.log('Successfully fetched from API gateway')
       } catch (error) {
-        console.error('Error fetching country details:', error)
-        setError('Failed to load country details')
-        setLoading(false)
+        console.error('API gateway fetch failed:', error)
+        gatewayFailed = true
       }
+
+      if (gatewayFailed) {
+        try {
+          const response = await fetch(
+            `${process.env.EXPO_PUBLIC_FALLBACK_API_URL}/name/${encodeURIComponent(name)}?fullText=true`
+          )
+          const country = await response.json()
+          data = country[0]
+          console.log('Successfully fetched from fallback API')
+        } catch (error) {
+          console.error('Error fetching from fallback API:', error)
+          setError('Failed to load country details')
+          return
+        }
+      }
+
+      setCountry({
+        id: data.id,
+        name: data.name.common,
+        capital: data.capital?.[0] || 'N/A',
+        region: data.region,
+        subregion: data.subregion,
+        population: data.population,
+        area: data.area,
+        currencies: data.currencies,
+        languages: data.languages,
+        flag: data.flags?.png,
+        borders: data.borders,
+      })
+
+      setLoading(false)
     }
 
     if (name) {
