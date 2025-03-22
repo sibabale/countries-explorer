@@ -39,7 +39,7 @@ export const getAllCountries = async (req: Request, res: Response) => {
 };
 
 export const getCountryByName = async (req: Request, res: Response) => {
-  const { name } = req.body;
+  const { name } = req.query;
 
   try {
     if (!name) {
@@ -49,7 +49,7 @@ export const getCountryByName = async (req: Request, res: Response) => {
       where: {
         name: {
           path: ['common'],
-          equals: name,
+          equals: name as string,
         },
       },
     });
