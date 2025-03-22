@@ -76,10 +76,6 @@ const CountryDetailPage = ({ navigation }: { navigation: any }) => {
       const token = await AsyncStorage.getItem('token')
 
       try {
-        console.log(
-          'Attempting to fetch from API gateway...',
-          `${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/countries/search?name=${encodeURIComponent(name)}`
-        )
         const response = await fetch(
           `${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/countries/search?name=${encodeURIComponent(name)}`,
           {
@@ -95,7 +91,7 @@ const CountryDetailPage = ({ navigation }: { navigation: any }) => {
         }
 
         data = await response.json()
-        console.log('Successfully fetched from API gateway')
+        console.log('Successfully fetched country details from API gateway')
       } catch (error) {
         console.error('API gateway fetch failed:', error)
         gatewayFailed = true
@@ -108,9 +104,9 @@ const CountryDetailPage = ({ navigation }: { navigation: any }) => {
           )
           const country = await response.json()
           data = country[0]
-          console.log('Successfully fetched from fallback API')
+          console.log('Successfully fetched country details from fallback API')
         } catch (error) {
-          console.error('Error fetching from fallback API:', error)
+          console.error('Error fetching country details from fallback API:', error)
           setError('Failed to load country details')
           return
         }

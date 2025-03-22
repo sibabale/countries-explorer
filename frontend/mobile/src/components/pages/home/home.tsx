@@ -76,7 +76,9 @@ const HomePage = ({ navigation }: { navigation: any }) => {
           throw new Error('API gateway request failed')
         }
 
-        data = await response.json()
+        const countries = await response.json()
+        data = countries.data
+
         console.log('Successfully fetched from API gateway')
       } catch (error) {
         console.error('API gateway fetch failed:', error)
@@ -183,8 +185,8 @@ const HomePage = ({ navigation }: { navigation: any }) => {
       ) : (
         <ScrollView>
           {filteredCountries.length > 0 ? (
-            filteredCountries.map(country => (
-              <CountryCard key={country.id} onPress={() => handleCountryPress(country)}>
+            filteredCountries.map((country, index) => (
+              <CountryCard key={index} onPress={() => handleCountryPress(country)}>
                 <CountryName>{country.name}</CountryName>
                 <CountryInfo>Capital: {country.capital}</CountryInfo>
                 <CountryInfo>Region: {country.region}</CountryInfo>
