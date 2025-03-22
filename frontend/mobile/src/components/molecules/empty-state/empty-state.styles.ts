@@ -1,4 +1,4 @@
-// [ COMPONENTS > PAGES > HOME  ] ##################################################################
+// [ COMPONENTS > MOLECULES > EMPTY STATE ] ########################################################
 
 // 1.1. EXTERNAL DEPENDENCIES ......................................................................
 import styled from 'styled-components/native'
@@ -19,36 +19,16 @@ import styled from 'styled-components/native'
 
 // 1.6. STYLES .....................................................................................
 
-export const Container = styled.View`
-  flex: 1;
-  background-color: #f5f5f5;
-`
-
-export const LoadingContainer = styled.View`
-  flex: 1;
-  justify-content: center;
+export const EmptyStateContainer = styled.View`
+  padding: 32px;
   align-items: center;
 `
 
-export const HeaderContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  background-color: #ffffff;
-  border-bottom-width: 1px;
-  border-bottom-color: #e0e0e0;
+export const EmptyStateText = styled.Text`
+  font-size: 16px;
+  color: #666666;
 `
 
-export const HeaderTitle = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: #333333;
-`
-
-export const ProfileButton = styled.TouchableOpacity`
-  padding: 8px;
-`
 // 1.6. END ........................................................................................
 
 // END FILE ########################################################################################

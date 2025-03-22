@@ -1,4 +1,4 @@
-// [ COMPONENTS > PAGES > HOME  ] ##################################################################
+// [ COMPONENTS > ATOMS > SEARCH INPUT > HOME ] ####################################################
 
 // 1.1. EXTERNAL DEPENDENCIES ......................................................................
 import styled from 'styled-components/native'
@@ -19,35 +19,19 @@ import styled from 'styled-components/native'
 
 // 1.6. STYLES .....................................................................................
 
-export const Container = styled.View`
-  flex: 1;
-  background-color: #f5f5f5;
-`
-
-export const LoadingContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`
-
-export const HeaderContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+export const SearchContainer = styled.View`
   padding: 16px;
   background-color: #ffffff;
   border-bottom-width: 1px;
   border-bottom-color: #e0e0e0;
 `
 
-export const HeaderTitle = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: #333333;
-`
-
-export const ProfileButton = styled.TouchableOpacity`
-  padding: 8px;
+export const Input = styled.TextInput`
+  height: 48px;
+  padding: 0 16px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  font-size: 16px;
 `
 // 1.6. END ........................................................................................
 

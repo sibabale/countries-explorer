@@ -1,7 +1,6 @@
-// [ COMPONENTS > PAGES > HOME ] ###################################################################
+// [ COMPONENTS > PAGES > HOME ] #####################################################################
 
-// 1.1. EXTERNAL DEPENDENCIES ......................................................................
-
+// 1.1. EXTERNAL DEPENDENCIES ........................................................................
 import { Alert } from 'react-native'
 import { logout } from '../../../redux/slices/user'
 import { useState, useEffect } from 'react'
@@ -9,24 +8,15 @@ import { Dispatch } from 'redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch } from 'react-redux'
 import { ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native'
-
 // 1.1. END ........................................................................................
 
 // 1.2. INTERNAL DEPENDENCIES ......................................................................
-import {
-  Container,
-  SearchInput,
-  CountryCard,
-  CountryName,
-  HeaderTitle,
-  CountryInfo,
-  EmptyStateText,
-  SearchContainer,
-  HeaderContainer,
-  LoadingContainer,
-  EmptyStateContainer,
-} from './home.styles'
+import Loader from '../../atoms/loader/loader'
 import LogoutIcon from '../../atoms/icons/logout'
+import EmptyState from '../../molecules/empty-state/empty-state'
+import CountryCard from '../../molecules/country-card/country-card'
+import SearchInput from '../../atoms/search-input/search-input'
+import { Container, HeaderTitle, HeaderContainer } from './home.styles'
 // 1.2. END ........................................................................................
 
 // 1.3. IMAGES .....................................................................................
@@ -169,33 +159,29 @@ const HomePage = ({ navigation }: { navigation: any }) => {
         </TouchableOpacity>
       </HeaderContainer>
 
-      <SearchContainer>
-        <SearchInput
-          placeholder="Search countries..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          clearButtonMode="while-editing"
-        />
-      </SearchContainer>
+      <SearchInput
+        value={searchQuery}
+        placeholder="Search countries..."
+        onChangeText={setSearchQuery}
+        clearButtonMode="while-editing"
+      />
 
       {loading ? (
-        <LoadingContainer>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </LoadingContainer>
+        <Loader />
       ) : (
         <ScrollView>
           {filteredCountries.length > 0 ? (
             filteredCountries.map((country, index) => (
-              <CountryCard key={index} onPress={() => handleCountryPress(country)}>
-                <CountryName>{country.name}</CountryName>
-                <CountryInfo>Capital: {country.capital}</CountryInfo>
-                <CountryInfo>Region: {country.region}</CountryInfo>
-              </CountryCard>
+              <CountryCard
+                key={index}
+                name={country.name}
+                capital={country.capital}
+                region={country.region}
+                onPress={() => handleCountryPress(country)}
+              />
             ))
           ) : (
-            <EmptyStateContainer>
-              <EmptyStateText>No countries found</EmptyStateText>
-            </EmptyStateContainer>
+            <EmptyState text="No countries found" />
           )}
         </ScrollView>
       )}

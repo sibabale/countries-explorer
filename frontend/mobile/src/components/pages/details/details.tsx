@@ -29,6 +29,7 @@ import {
   LoadingContainer,
 } from './details.styles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loader from '../../atoms/loader/loader'
 
 // 1.2. END ........................................................................................
 
@@ -167,9 +168,7 @@ const CountryDetailPage = ({ navigation }: { navigation: any }) => {
   if (loading) {
     return (
       <Container>
-        <LoadingContainer>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </LoadingContainer>
+        <Loader />
       </Container>
     )
   }
