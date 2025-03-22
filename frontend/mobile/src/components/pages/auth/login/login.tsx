@@ -86,7 +86,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       setIsLoading(true)
 
       try {
-        const response = await fetch('http://192.168.245.244:3000/api/auth/login', {
+        const response = await fetch(`${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
