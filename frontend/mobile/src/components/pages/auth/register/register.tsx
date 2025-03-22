@@ -98,16 +98,19 @@ const Register = () => {
       setIsLoading(true)
 
       try {
-        const response = await fetch('http://192.168.1.100:3000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        })
+        const response = await fetch(
+          `${process.env.EXPO_PUBLIC_API_GATEWAY_URL}/api/auth/register`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          }
+        )
 
         const data = await response.json()
 
